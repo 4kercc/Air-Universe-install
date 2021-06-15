@@ -124,7 +124,13 @@ update() {
 }
 
 config() {
-    cat /usr/local/etc/au/au.json
+    vi /usr/local/etc/au/au.json
+    confirm "是否重启Air-Universe" "y"
+    if [[ $? == 0 ]]; then
+        restart
+    else
+        show_menu
+    fi
 }
 
 uninstall() {
@@ -452,7 +458,7 @@ show_menu() {
     echo -e "
   ${green}Air-Universe 后端管理脚本，${plain}${red}不适用于docker${plain}
 --- https://github.com/crossfw/Air-Universe ---
-  ${green}0.${plain} 退出脚本
+  ${green}0.${plain} 修改配置
 ————————————————
   ${green}1.${plain} 安装 Air-Universe
   ${green}2.${plain} 使用ACME获取SSL证书
@@ -476,7 +482,7 @@ show_menu() {
     echo && read -p "请输入选择 [0-13]: " num
 
     case "${num}" in
-        0) exit 0
+        0) config
         ;;
         1) check_uninstall && install
         ;;
